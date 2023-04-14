@@ -1,0 +1,2 @@
+start app: npx expo start
+storage package: https://react-native-async-storage.github.io/async-storage/docs/install

@@ -102,8 +102,6 @@ const styles = StyleSheet.create({
 		marginTop: Dimensions.get("window").height * 0.02,
 		width: 100,
 		justifyContent: "center",
-		// paddingTop: 10,
-		// paddingBottom: 10,
 		alignSelf: "flex-end"
 	},
 
