@@ -7,14 +7,29 @@ import { useMediaValues } from "../styles/MediaQueries";
 import Error from "./Error";
 
 import * as Yup from "yup";
+import { useEffect, useState } from "react";
+import {
+	getDefaultPack
+} from "../storage/CustomerSettingsStorage";
+import { Pack } from "../models/Pack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { PockVocRoutes } from "../router/Routes";
 
 const validationSchema = Yup.object().shape({
 	word: Yup.string().required("Required"),
 	translation: Yup.string().required("Required"),
 });
 
-export default function AddWord() {
+export default function AddWord({navigation}: NativeStackScreenProps<PockVocRoutes, 'AddWord'>) {
 	var { isMobile } = useMediaValues();
+
+	var [defaultPack, setDefaultPack] = useState<Pack | null>(null);
+
+	useEffect(() => {
+		async () => {
+			setDefaultPack(await getDefaultPack());
+		};
+	}, []);
 
 	return (
 		<View style={globalStyles.view}>
@@ -63,10 +78,12 @@ export default function AddWord() {
 						) : null}
 
 						<div style={styles.block}>
-							<Text style={styles.packNameText}>Default pack</Text>
+							<label style={styles.packNameText} htmlFor="DefaultPack">Add to pack:</label>
+							<Text style={styles.packNameText}>{defaultPack ? defaultPack.name : "--//--"}</Text>
+
 							<Button
 								onPress={() => {
-									console.log("Change pack");
+									navigation.navigate("ChangePack");
 								}}
 								title="Change"
 								compact={true}
@@ -78,7 +95,9 @@ export default function AddWord() {
 							onPress={handleSubmit}
 							title="Submit"
 							style={styles.submitButton}
-							contentContainerStyle={styles.pressableContainerStyle}
+							contentContainerStyle={
+								styles.pressableContainerStyle
+							}
 						/>
 					</View>
 				)}
@@ -102,26 +121,26 @@ const styles = StyleSheet.create({
 		marginTop: Dimensions.get("window").height * 0.02,
 		width: 100,
 		justifyContent: "center",
-		alignSelf: "flex-end"
+		alignSelf: "flex-end",
 	},
 
 	pressableContainerStyle: {
-		padding: 30
+		padding: 30,
 	},
 
 	block: {
 		marginTop: Dimensions.get("window").height * 0.02,
 		display: "flex",
 		justifyContent: "flex-end",
-		alignItems: "center"
+		alignItems: "center",
 	},
 
 	changePackButton: {
-		width: 100
+		width: 100,
 	},
 
 	packNameText: {
 		color: "white",
-		marginRight: 10
-	}
+		marginRight: 10,
+	},
 });

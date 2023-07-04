@@ -1,2 +1,2 @@
-start app: npx expo start
+start app: cd into mobile-app. Type "npm start"
 storage package: https://react-native-async-storage.github.io/async-storage/docs/install

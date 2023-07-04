@@ -4,7 +4,6 @@ import { log } from '../businessLogic/Logger';
 import uuid from 'react-native-uuid';
 
 const packsKey = "packs";
-const selectedPackIdKey = "selectedPack";
 
 export const getPackNames = async (): Promise<string[]> => {
 	try {
@@ -57,10 +56,14 @@ export const upsertPack = async (pack: Pack) => {
 	}
 }
 
-const insertPack = async (pack: Pack) => {
+const insertPack = async (packName: string, originalLanguage,) => {
 	pack.id = uuid.v4().toString();
 
 	const packs = await getPacks();
+	const maxOrderNumber = Math.max(... packs.map(p => p.order));
+
+	pack.order = maxOrderNumber + 1;
+
 	packs.push(pack);
 
 	setPacks(packs);
@@ -85,34 +88,4 @@ const updatePack = async (pack: Pack) => {
 	}
 
 	setPacks(packs);
-}
-
-export const getSelectedPackName = async (): Promise<string> => {
-	try {
-		const value = await AsyncStorage.getItem(selectedPackIdKey);
-
-		const packs = await getPacks();
-
-		const neededPack = packs.find(pack => pack.id == value);
-		if(!neededPack)
-		{
-			log("selected pack wasn't found");
-		}
-		else
-		{
-			return neededPack.name;
-		}
-	} catch (e) {
-		log("error getSelectedPackName", e);
-	}
-
-	return "";
-}
-
-export const setSelectedPack = async (pack: Pack) => {
-	try {
-		await AsyncStorage.setItem(selectedPackIdKey, pack.id);
-	} catch (e) {
-		log("error setSelectedPack", e);
-	}
 }

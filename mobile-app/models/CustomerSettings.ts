@@ -1,4 +1,5 @@
 export interface CustomerSettings{
 	id: string,
-	nativeLanguage: string
+	nativeLanguage: string | null,
+	defaultPackForAddingId: string | null
 }

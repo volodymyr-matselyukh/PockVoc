@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import MainScreen from './components/MainScreen';
 import AddWord from './components/AddWord';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChangePacks from './components/ChangePack';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
 						options={{ title: 'Welcome' }}
 					/>
 					<Stack.Screen name="AddWord" component={AddWord} />
+					<Stack.Screen name="ChangePack" component={ChangePacks} />
 				</Stack.Navigator>
 			</NavigationContainer>
 			<StatusBar style="auto" />
