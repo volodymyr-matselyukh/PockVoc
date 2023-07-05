@@ -5,10 +5,11 @@ import { getPacks, upsertPack } from "../storage/PacksStorage";
 import { View } from "react-native";
 import {Button} from "@react-native-material/core";
 import globalStyles from "../styles/GlobalStyles";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { PockVocRoutes } from "../router/Routes";
 
-export default function ChangePacks() {
+export default function ChangePacks({navigation}: NativeStackScreenProps<PockVocRoutes, 'ChangePack'>) {
 	let [packs, setPacks] = useState<Pack[]>([]);
-	let [newPackName, setNewPackName] = useState<string>();
 
 	useEffect(() => {
 		async () => {
@@ -20,20 +21,11 @@ export default function ChangePacks() {
 
 	return (
 		<View style={globalStyles.view}>
-			<TextInput
-				value={newPackName}
-				onChangeText={(e) => setNewPackName(e.valueOf())}
-			/>
-
 			<Button
 				onPress={() => {
-					upsertPack({
-						name: newPackName!,
-						order: 0,
-						
-					});
+					navigation.navigate("AddNewPack");
 				}}
-				title="Add"
+				title="Add new pack"
 				compact={true}
 			/>
 
