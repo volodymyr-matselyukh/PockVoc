@@ -5,7 +5,8 @@ import * as Yup from "yup";
 import { TextInput } from "@react-native-material/core";
 import Error from "./Error";
 import { languages } from "../models/Languages";
-import AutoComplete from "./AutoComplete";
+import AutoComplete from "./AutoComplete/AutoComplete";
+import { useState } from "react";
 
 const validationSchema = Yup.object().shape({
 	word: Yup.string().required("Required"),
@@ -13,6 +14,9 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function AddNewPack() {
+
+	let [selectedLanguage, setSelectedLanguage] = useState<number>();
+
 	return (
 		<View style={globalStyles.view}>
 			<Formik
@@ -33,17 +37,8 @@ export default function AddNewPack() {
 					touched,
 				}) => (
 					<View>
-						<TextInput
-							onChangeText={handleChange("packName")}
-							onBlur={handleBlur("packName")}
-							value={values.packName}
-							label="Word"
-						/>
-						{errors.packName && touched.packName ? (
-							<Error text={errors.packName} />
-						) : null}
-
-						<AutoComplete></AutoComplete>
+						Selected language id: {selectedLanguage}
+						<AutoComplete onSelected={(itemId) => setSelectedLanguage(itemId as number)}></AutoComplete>
 					</View>
 				)}
 			</Formik>
